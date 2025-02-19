@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { getAllByTestId } from "@testing-library/dom";
 
 const GameBoard = () => {
     const [board, setBoard] = useState([]);
     const [gameOver, setGameOver] = useState(false);
+    const gameOverRef = useRef(false);
 
     useEffect(() => {
         axios.get("http://127.0.0.1:5000/start").then((response) => {
@@ -44,18 +44,16 @@ const GameBoard = () => {
             .post("http://127.0.0.1:5000/move", { direction })
             .then((response) => {
                 setBoard(response.data.board);
-                console.log(response.data);
                 if (response.data.gameOver) {
                     setGameOver(true);
+                    gameOverRef.current = true;
                 }
             });
     };
 
     const getAIMove = async () => {
         const makeMove = async () => {
-            console.log(gameOver);
-            if (gameOver) return;
-
+            if (gameOverRef.current) return;
             try {
                 const response = await axios.get(
                     "http://127.0.0.1:5000/ai_move"
@@ -66,7 +64,6 @@ const GameBoard = () => {
                 // Schedule the next move after this one completes
                 setTimeout(makeMove, 100);
             } catch (error) {
-                console.log(gameOver);
                 console.error("Error getting AI move:", error);
                 // Even if there's an error, try again after delay
                 setTimeout(makeMove, 100);
