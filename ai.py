@@ -2,11 +2,12 @@ import numpy as np
 import random
 from game import Game
 
-WEIGHT_MONOTONICITY = 2.0
-WEIGHT_EMPTY_TILES = 3.0
-WEIGHT_MERGE = 2.0
-WEIGHT_CORNER = 1.0
-MAX_DEPTH = 4
+WEIGHT_MONOTONICITY = 2.5
+WEIGHT_EMPTY_TILES = 4.0
+WEIGHT_MERGE = 1.5
+WEIGHT_CORNER = 2.0
+WEIGHT_TILE_SUM = 0.1
+MAX_DEPTH = 5
 
 
 def evaluate_board(game: Game):
@@ -20,19 +21,24 @@ def evaluate_board(game: Game):
 
 def monotonicity(board):
     score = 0
+    penalties = 0
+    board_array = np.array(board)
     # Check rows
-    for row in board:
+    for row in board_array:
         for i in range(3):
             if row[i] >= row[i + 1]:
                 score += row[i]
+            else:
+                penalties += abs(row[i] - row[i + 1])
     # Check columns
-    board_array = np.array(board)  # Convert to numpy array for column operations
-    for col in range(len(board)):
-        column = board_array[:, col]
+    for col in board_array.T:
         for i in range(3):
-            if column[i] >= column[i + 1]:
-                score += column[i]
-    return score
+            if col[i] >= col[i + 1]:
+                score += col[i]
+            else:
+                penalties += abs(col[i] - col[i + 1])
+
+    return score - penalties  # Penalize non-monotonicity
 
 
 def empty_tiles(board):
@@ -41,15 +47,34 @@ def empty_tiles(board):
 
 def merging_potential(board):
     score = 0
-    for row in board:
+    board_array = np.array(board)
+
+    # Horizontal merges
+    for row in board_array:
         for i in range(3):
-            if row[i] == row[i + 1]:
-                score += row[i]
+            if row[i] == row[i + 1] and row[i] != 0:
+                score += row[i] * 2  # Reward merges
+
+    # Vertical merges
+    for col in board_array.T:
+        for i in range(3):
+            if col[i] == col[i + 1] and col[i] != 0:
+                score += col[i] * 2  # Reward merges
+
     return score
 
 
 def highest_tile_corner(board):
-    return max(board[0][0], board[0][3], board[3][0], board[3][3])
+    max_tile = np.max(board)
+    board_array = np.array(board)
+    if (
+        board_array[0, 0] == max_tile
+        or board_array[0, 3] == max_tile
+        or board_array[3, 0] == max_tile
+        or board_array[3, 3] == max_tile
+    ):
+        return max_tile
+    return -max_tile
 
 
 def get_possible_moves(game: Game):
