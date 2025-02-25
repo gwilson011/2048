@@ -1,0 +1,14 @@
+.solve-button {
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    border: 3px solid black;
+    font-family: Pixeled;
+    font-size: 10px;
+    cursor: pointer;
+}
+
+.solve-button:hover {
+    background-color: black;
+    color: white;
+}

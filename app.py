@@ -23,7 +23,13 @@ def move():
     data = request.json
     direction = data.get("direction")  # 'up', 'down', 'left', 'right'
     game.move(direction)
-    return jsonify({"board": game.get_board(), "gameOver": game.game_over()})
+    return jsonify(
+        {
+            "board": game.get_board(),
+            "gameOver": game.game_over(),
+            "score": game.get_score(),
+        }
+    )
 
 
 @app.route("/ai_move", methods=["GET"])

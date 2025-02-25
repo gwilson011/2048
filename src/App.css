@@ -36,3 +36,24 @@
         transform: rotate(360deg);
     }
 }
+
+@font-face {
+    font-family: "Pixeled";
+    src: url("../public/fonts/Pixeled.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Tango";
+    src: url("../public/fonts/TangoSans.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Louis";
+    src: url("../public/fonts/LouisGeorgeCafe.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}

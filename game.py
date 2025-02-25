@@ -8,6 +8,7 @@ class Game:
         self.spawn_tile()
         self.spawn_tile()
         self.over = False
+        self.score = 0
 
     def spawn_tile(self):
         empty_tiles = [
@@ -54,6 +55,7 @@ class Game:
                         if self.board[k][j] != 0:
                             if self.board[i][j] == self.board[k][j]:
                                 self.board[k][j] = self.board[i][j] * 2
+                                self.score += self.board[i][j] * 2
                                 self.board[i][j] = 0
                         else:
                             self.board[k][j] = self.board[i][j]
@@ -67,6 +69,7 @@ class Game:
                         if self.board[k][j] != 0:
                             if self.board[i][j] == self.board[k][j]:
                                 self.board[k][j] = self.board[i][j] * 2
+                                self.score += self.board[i][j] * 2
                                 self.board[i][j] = 0
                         else:
                             self.board[k][j] = self.board[i][j]
@@ -80,6 +83,7 @@ class Game:
                         if self.board[i][k] != 0:
                             if self.board[i][j] == self.board[i][k]:
                                 self.board[i][k] = self.board[i][j] * 2
+                                self.score += self.board[i][j] * 2
                                 self.board[i][j] = 0
                                 break  # Stop after merging
                         else:
@@ -95,6 +99,7 @@ class Game:
                         if self.board[i][k] != 0:
                             if self.board[i][j] == self.board[i][k]:
                                 self.board[i][k] = self.board[i][j] * 2
+                                self.score += self.board[i][j] * 2
                                 self.board[i][j] = 0
                                 break  # Stop after merging
                         else:
@@ -104,6 +109,9 @@ class Game:
 
     def get_board(self):
         return self.board
+
+    def get_score(self):
+        return self.score
 
     def is_game_over(self):
         # Check for empty cells

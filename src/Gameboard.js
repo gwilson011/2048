@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import "./GameBoard.css";
 
 const GameBoard = () => {
     const [board, setBoard] = useState([]);
     const [gameOver, setGameOver] = useState(false);
+    const [score, setScore] = useState(0);
     const gameOverRef = useRef(false);
 
     useEffect(() => {
@@ -48,6 +50,8 @@ const GameBoard = () => {
                     setGameOver(true);
                     gameOverRef.current = true;
                 }
+                setScore(response.data.score);
+                console.log(response.data.score);
             });
     };
 
@@ -75,57 +79,114 @@ const GameBoard = () => {
     };
 
     return (
-        <div>
-            <h1>2048</h1>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "20px",
+            }}
+        >
             <div
                 style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(4, 100px)",
-                    gap: "10px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100vh",
                 }}
             >
-                {board.flat().map((num, i) => (
-                    <div
-                        key={i}
-                        style={{
-                            width: "100px",
-                            height: "100px",
-                            background:
-                                num === 2
-                                    ? "#eee3d9"
-                                    : num === 4
-                                    ? "#eddfc9"
-                                    : num === 8
-                                    ? "#f2b179"
-                                    : num === 16
-                                    ? "#f59563"
-                                    : num === 32
-                                    ? "#f57c5e"
-                                    : num === 64
-                                    ? "#f65d3b"
-                                    : num === 128
-                                    ? "#eece73"
-                                    : num === 256
-                                    ? "#eecc62"
-                                    : num === 512
-                                    ? "#edc851"
-                                    : num === 1024
-                                    ? "#edc851"
-                                    : num === 2048
-                                    ? "#eec22f"
-                                    : "#ccc",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "24px",
-                        }}
-                    >
-                        {num || ""}
-                    </div>
-                ))}
+                <h1 style={{ fontFamily: "Tango", fontSize: "80px" }}>2048</h1>
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: "repeat(4, 100px)",
+                        gap: "10px",
+                        paddingRight: "30px",
+                        fontFamily: "Tango",
+                    }}
+                >
+                    {board.flat().map((num, i) => (
+                        <div
+                            key={i}
+                            style={{
+                                width: "100px",
+                                height: "100px",
+                                borderRadius: "8px",
+                                background:
+                                    num === 2
+                                        ? "#eee3d9"
+                                        : num === 4
+                                        ? "#eddfc9"
+                                        : num === 8
+                                        ? "#f2b179"
+                                        : num === 16
+                                        ? "#f59563"
+                                        : num === 32
+                                        ? "#f57c5e"
+                                        : num === 64
+                                        ? "#f65d3b"
+                                        : num === 128
+                                        ? "#eece73"
+                                        : num === 256
+                                        ? "#eecc62"
+                                        : num === 512
+                                        ? "#edc851"
+                                        : num === 1024
+                                        ? "#edc851"
+                                        : num === 2048
+                                        ? "#eec22f"
+                                        : "#ccc",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                fontSize: "30px",
+                            }}
+                        >
+                            {num || ""}
+                        </div>
+                    ))}
+                </div>
             </div>
-            {gameOver && <div>Game Over</div>}
-            <button onClick={() => getAIMove()}>AI</button>
+            <div
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "left",
+                    justifyContent: "center",
+                    height: "100vh",
+                    minWidth: "200px",
+                    gap: "20px",
+                }}
+            >
+                <div
+                    style={{
+                        border: "3pt solid black",
+                        borderRadius: "8px",
+                        padding: "10px",
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                >
+                    <span style={{ fontFamily: "Pixeled", fontSize: "10px" }}>
+                        SCORE
+                    </span>
+                    <span style={{ fontFamily: "Tango", fontSize: "30px" }}>
+                        {score}
+                    </span>
+                </div>
+                {gameOver && (
+                    <div style={{ fontFamily: "Louis", color: "red" }}>
+                        Game Over
+                    </div>
+                )}
+                <button onClick={() => getAIMove()} className="solve-button">
+                    SOLVE
+                </button>
+            </div>
         </div>
     );
 };

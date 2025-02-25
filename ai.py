@@ -78,7 +78,6 @@ def highest_tile_corner(board):
 
 
 def get_possible_moves(game: Game):
-    print(game.game_over())
     possible_moves = []
     for dir in ["left", "right", "up", "down"]:
         test_game = game.copy()
@@ -90,7 +89,6 @@ def get_possible_moves(game: Game):
 
 def expectimax(game: Game, depth, is_maximizing_player):
     if depth == MAX_DEPTH or game.game_over():
-        print(game.game_over())
         return evaluate_board(game)
 
     if is_maximizing_player:
