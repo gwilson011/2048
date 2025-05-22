@@ -9,9 +9,11 @@ const GameBoard = () => {
     const gameOverRef = useRef(false);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:5000/start").then((response) => {
-            setBoard(response.data.board);
-        });
+        axios
+            .get("https://gwilson011.pythonanywhere.com/start")
+            .then((response) => {
+                setBoard(response.data.board);
+            });
 
         // Add keyboard event listener
         const handleKeyPress = (event) => {
@@ -43,7 +45,7 @@ const GameBoard = () => {
 
     const handleMove = (direction) => {
         axios
-            .post("http://127.0.0.1:5000/move", { direction })
+            .post("https://gwilson011.pythonanywhere.com/move", { direction })
             .then((response) => {
                 setBoard(response.data.board);
                 if (response.data.gameOver) {
@@ -60,7 +62,7 @@ const GameBoard = () => {
             if (gameOverRef.current) return;
             try {
                 const response = await axios.get(
-                    "http://127.0.0.1:5000/ai_move"
+                    "https://gwilson011.pythonanywhere.com/ai_move"
                 );
                 if (response.data.move) {
                     handleMove(response.data.move);
@@ -83,9 +85,14 @@ const GameBoard = () => {
             style={{
                 display: "flex",
                 flexDirection: "row",
-                alignItems: "center",
+                alignItems: "start",
                 justifyContent: "center",
-                gap: "20px",
+                gap: "10px",
+                padding: "20px",
+                minHeight: "100vh",
+                "@media (max-width: 768px)": {
+                    flexDirection: "column",
+                },
             }}
         >
             <div
@@ -94,7 +101,6 @@ const GameBoard = () => {
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    height: "100vh",
                 }}
             >
                 <h1 style={{ fontFamily: "Tango", fontSize: "80px" }}>2048</h1>
@@ -103,7 +109,7 @@ const GameBoard = () => {
                         display: "grid",
                         gridTemplateColumns: "repeat(4, 100px)",
                         gap: "10px",
-                        paddingRight: "30px",
+                        padding: "20px 0",
                         fontFamily: "Tango",
                     }}
                 >
@@ -153,11 +159,11 @@ const GameBoard = () => {
                 style={{
                     display: "flex",
                     flexDirection: "column",
-                    alignItems: "left",
+                    alignItems: "center",
                     justifyContent: "center",
-                    height: "100vh",
                     minWidth: "200px",
                     gap: "20px",
+                    height: "100vh",
                 }}
             >
                 <div

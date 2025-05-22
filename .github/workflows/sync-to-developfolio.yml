@@ -1,0 +1,42 @@
+name: Sync 2048 to Developfolio
+
+on:
+    push:
+        branches: [master] # or your default branch
+
+jobs:
+    build-and-sync:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout 2048 repo
+              uses: actions/checkout@v3
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: "18"
+
+            - name: Install dependencies and build
+              run: |
+                  npm install
+                  npm run build
+
+            - name: Clone developfolio repo
+              run: |
+                  git clone https://x-access-token:${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/gwilson011/developfolio.git website
+
+            - name: Copy build to developfolio repo
+              run: |
+                  rm -rf website/public/2048
+                  mkdir -p website/public/2048
+                  cp -r build/* website/public/2048/
+
+            - name: Commit and push changes to developfolio
+              run: |
+                  cd website
+                  git config user.name "github-actions[bot]"
+                  git config user.email "github-actions[bot]@users.noreply.github.com"
+                  git add .
+                  git commit -m "Auto-sync 2048 build to developfolio" || echo "No changes to commit"
+                  git push
