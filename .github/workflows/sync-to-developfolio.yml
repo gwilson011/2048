@@ -17,6 +17,13 @@ jobs:
               with:
                   node-version: "18"
 
+            - name: Set homepage to /2048
+              run: |
+                  jq '.homepage="/2048"' package.json > temp.json && mv temp.json package.json
+
+            - name: Set Google Maps API Key
+              run: echo "REACT_APP_GOOGLE_MAPS_API_KEY=${{ secrets.GOOGLE_MAPS_API_KEY }}" >> .env
+
             - name: Install dependencies and build
               run: |
                   npm install
