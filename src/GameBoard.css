@@ -26,6 +26,7 @@
 @media (max-width: 768px) {
     .grid {
         margin-bottom: -300px;
+        grid-template-columns: repeat(4, 70px) !important;
     }
     .game-container {
         flex-direction: column;
@@ -35,6 +36,12 @@
     .sidebar {
         display: flex !important;
         flex-direction: row !important;
+    }
+
+    .tile {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 20px !important;
     }
 }
 
