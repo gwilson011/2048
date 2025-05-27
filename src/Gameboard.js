@@ -80,116 +80,58 @@ const GameBoard = () => {
         makeMove();
     };
 
+    const getTileColor = (num) => {
+        switch (num) {
+            case 2:
+                return "#eee3d9";
+            case 4:
+                return "#eddfc9";
+            case 8:
+                return "#f2b179";
+            case 16:
+                return "#f59563";
+            case 32:
+                return "#f57c5e";
+            case 64:
+                return "#f65d3b";
+            case 128:
+                return "#eece73";
+            case 256:
+                return "#eecc62";
+            case 512:
+                return "#edc851";
+            case 1024:
+                return "#edc851";
+            case 2048:
+                return "#eec22f";
+            default:
+                return "#ccc";
+        }
+    };
+
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "start",
-                justifyContent: "center",
-                gap: "10px",
-                padding: "20px",
-                minHeight: "100vh",
-                "@media (max-width: 768px)": {
-                    flexDirection: "column",
-                },
-            }}
-        >
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                <h1 style={{ fontFamily: "Tango", fontSize: "80px" }}>2048</h1>
-                <div
-                    style={{
-                        display: "grid",
-                        gridTemplateColumns: "repeat(4, 100px)",
-                        gap: "10px",
-                        padding: "20px 0",
-                        fontFamily: "Tango",
-                    }}
-                >
+        <div className="game-container">
+            <div className="board-section">
+                <h1 className="title">2048</h1>
+                <div className="grid">
                     {board.flat().map((num, i) => (
                         <div
                             key={i}
-                            style={{
-                                width: "100px",
-                                height: "100px",
-                                borderRadius: "8px",
-                                background:
-                                    num === 2
-                                        ? "#eee3d9"
-                                        : num === 4
-                                        ? "#eddfc9"
-                                        : num === 8
-                                        ? "#f2b179"
-                                        : num === 16
-                                        ? "#f59563"
-                                        : num === 32
-                                        ? "#f57c5e"
-                                        : num === 64
-                                        ? "#f65d3b"
-                                        : num === 128
-                                        ? "#eece73"
-                                        : num === 256
-                                        ? "#eecc62"
-                                        : num === 512
-                                        ? "#edc851"
-                                        : num === 1024
-                                        ? "#edc851"
-                                        : num === 2048
-                                        ? "#eec22f"
-                                        : "#ccc",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontSize: "30px",
-                            }}
+                            className="tile"
+                            style={{ background: getTileColor(num) }}
                         >
                             {num || ""}
                         </div>
                     ))}
                 </div>
             </div>
-            <div
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    minWidth: "200px",
-                    gap: "20px",
-                    height: "100vh",
-                }}
-            >
-                <div
-                    style={{
-                        border: "3pt solid black",
-                        borderRadius: "8px",
-                        padding: "10px",
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <span style={{ fontFamily: "Pixeled", fontSize: "10px" }}>
-                        SCORE
-                    </span>
-                    <span style={{ fontFamily: "Tango", fontSize: "30px" }}>
-                        {score}
-                    </span>
+            <div className="sidebar">
+                <div className="score-box">
+                    <span className="score-label">SCORE</span>
+                    <span className="score-value">{score}</span>
                 </div>
-                {gameOver && (
-                    <div style={{ fontFamily: "Louis", color: "red" }}>
-                        Game Over
-                    </div>
-                )}
-                <button onClick={() => getAIMove()} className="solve-button">
+                {gameOver && <div className="game-over">Game Over</div>}
+                <button onClick={getAIMove} className="solve-button">
                     SOLVE
                 </button>
             </div>
